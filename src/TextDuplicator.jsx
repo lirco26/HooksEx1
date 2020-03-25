@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
 export default function TextDuplicator() {
     const [content, setContent] = useState('');
+
+    const inputRef = React.createRef();
+
+    useEffect(() => {
+        inputRef.current.focus();
+    });
+
     return <div className="text-duplicator">
-        <input type="text" onChange={ (event) => {
+        <input type="text" ref={inputRef} onChange={(event) => {
             setContent(event.target.value);
         }
         }/>

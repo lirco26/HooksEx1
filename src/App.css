@@ -10,4 +10,9 @@ body {
   display: flex;
   flex-direction: column;
   width: 25vw;
+  font-size: 1.2em;
+}
+
+input {
+  font-size: 1em;
 }
