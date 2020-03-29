@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 
 export default function TextDuplicator() {
-    const [content, setContent] = useState('');
+    const [content, setContent] = useDelayedState('', 1);
 
     const inputRef = React.createRef();
 
@@ -16,4 +16,17 @@ export default function TextDuplicator() {
         }/>
         <span>{content}</span>
     </div>;
+}
+
+const MILLISECONDS_IN_SECOND = 1000;
+
+function useDelayedState(initialState, delayInSeconds) {
+    const [content, setContent] = useState(initialState);
+    const setContentInDelay = (newValue) => {
+        setTimeout(() => {
+            setContent(newValue);
+        }, delayInSeconds * MILLISECONDS_IN_SECOND);
+    };
+
+    return [content, setContentInDelay];
 }
