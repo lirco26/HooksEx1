@@ -1,32 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 export default function TextDuplicator() {
-    const [content, setContent] = useDelayedState('', 1);
+    const [state, setState] = useDelayedState({content: ''}, 1);
 
     const inputRef = React.createRef();
-
     useEffect(() => {
         inputRef.current.focus();
     });
 
     return <div className="text-duplicator">
-        <input type="text" ref={inputRef} onChange={(event) => {
-            setContent(event.target.value);
-        }
-        }/>
-        <span>{content}</span>
+        <input type="text" ref={inputRef} onChange={event => {
+            setState({content: event.target.value});
+        }}/>
+        <span>{state.content}</span>
     </div>;
+
 }
 
 const MILLISECONDS_IN_SECOND = 1000;
 
 function useDelayedState(initialState, delayInSeconds) {
-    const [content, setContent] = useState(initialState);
-    const setContentInDelay = (newValue) => {
-        setTimeout(() => {
-            setContent(newValue);
+    const [state, setState] = useState(initialState);
+
+    let timeout = null;
+    const setStateWithDelay = function (newState) {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(() => {
+            setState(newState);
         }, delayInSeconds * MILLISECONDS_IN_SECOND);
     };
 
-    return [content, setContentInDelay];
+    return [state, setStateWithDelay];
 }
